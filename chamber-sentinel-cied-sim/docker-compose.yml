@@ -1,0 +1,81 @@
+version: "3.9"
+
+services:
+  simulator:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - CIED_SIM_SIMULATION__CLOCK_SPEED=3600
+      - CIED_SIM_SIMULATION__DURATION_DAYS=365
+      - REDIS_URL=redis://redis:6379/0
+      - DATABASE_URL=postgresql://cied:cied@postgres:5432/cied_sim
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - cied-net
+
+  dashboard:
+    build: .
+    command: python -m src.visualization.dashboard.app
+    ports:
+      - "8050:8050"
+    environment:
+      - API_URL=http://simulator:8000
+    depends_on:
+      - simulator
+    networks:
+      - cied-net
+
+  worker:
+    build: .
+    command: celery -A src.worker worker --loglevel=info
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - DATABASE_URL=postgresql://cied:cied@postgres:5432/cied_sim
+    depends_on:
+      - redis
+      - postgres
+    networks:
+      - cied-net
+
+  postgres:
+    image: timescale/timescaledb:latest-pg16
+    environment:
+      - POSTGRES_USER=cied
+      - POSTGRES_PASSWORD=cied
+      - POSTGRES_DB=cied_sim
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/home/postgres/pgdata/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cied -d cied_sim"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - cied-net
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - cied-net
+
+volumes:
+  pgdata:
+
+networks:
+  cied-net:
+    driver: bridge

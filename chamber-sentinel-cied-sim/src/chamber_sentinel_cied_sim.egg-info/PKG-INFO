@@ -1,0 +1,47 @@
+Metadata-Version: 2.4
+Name: chamber-sentinel-cied-sim
+Version: 0.1.0
+Summary: Chamber Sentinel CIED Telemetry Simulator — burn-by-default vs persist-by-default architecture comparison
+Author: Chamber Sentinel Project
+License-Expression: MIT
+Keywords: cardiac,pacemaker,CIED,telemetry,simulation,privacy,data-sovereignty
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering :: Medical Science Apps.
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+Requires-Dist: numpy>=1.26
+Requires-Dist: scipy>=1.12
+Requires-Dist: pydantic>=2.5
+Requires-Dist: pydantic-settings>=2.1
+Requires-Dist: pyyaml>=6.0
+Requires-Dist: redis>=5.0
+Requires-Dist: celery>=5.3
+Requires-Dist: sqlalchemy>=2.0
+Requires-Dist: psycopg2-binary>=2.9
+Requires-Dist: alembic>=1.13
+Requires-Dist: fastapi>=0.109
+Requires-Dist: uvicorn[standard]>=0.27
+Requires-Dist: websockets>=12.0
+Requires-Dist: httpx>=0.26
+Provides-Extra: viz
+Requires-Dist: plotly>=5.18; extra == "viz"
+Requires-Dist: dash>=2.14; extra == "viz"
+Requires-Dist: dash-bootstrap-components>=1.5; extra == "viz"
+Requires-Dist: weasyprint>=61; extra == "viz"
+Requires-Dist: jinja2>=3.1; extra == "viz"
+Provides-Extra: dev
+Requires-Dist: ruff>=0.2; extra == "dev"
+Requires-Dist: mypy>=1.8; extra == "dev"
+Requires-Dist: pre-commit>=3.6; extra == "dev"
+Requires-Dist: types-PyYAML>=6.0; extra == "dev"
+Requires-Dist: types-redis>=4.6; extra == "dev"
+Provides-Extra: test
+Requires-Dist: pytest>=8.0; extra == "test"
+Requires-Dist: pytest-cov>=4.1; extra == "test"
+Requires-Dist: pytest-asyncio>=0.23; extra == "test"
+Requires-Dist: hypothesis>=6.92; extra == "test"
+Requires-Dist: faker>=22.0; extra == "test"
+Provides-Extra: all
+Requires-Dist: chamber-sentinel-cied-sim[dev,test,viz]; extra == "all"

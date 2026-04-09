@@ -1,0 +1,415 @@
+# =============================================================================
+# Chamber Sentinel CIED Simulator — Patient Archetypes
+# =============================================================================
+# Ten representative patient profiles spanning the most common CIED
+# indications, demographics, and comorbidity burdens.  Each profile
+# parameterises the stochastic generators so that a cohort of virtual
+# patients drawn from the same archetype will exhibit clinically plausible
+# variation around the archetype's central tendencies.
+# =============================================================================
+
+patients:
+
+  # ---------------------------------------------------------------------------
+  # P-001  Sick Sinus Syndrome — low-complexity, stable pacing
+  # ---------------------------------------------------------------------------
+  - patient_id: P-001
+    label: "Sick Sinus Syndrome — Stable Bradycardia"
+    primary_diagnosis: sick_sinus_syndrome
+    device_type: DDD
+    demographics:
+      age: 72
+      sex: female
+      bmi: 27.5
+    comorbidities:
+      - hypertension
+    heart_failure_nyha: null
+    af_burden_fraction: 0.02        # 2 % of time in AF
+    vt_risk_annual: 0.005           # very low
+    pacing_dependency: 0.40         # moderate sinus pauses
+
+    rhythm_transition_overrides:
+      # probability per hour of leaving normal sinus rhythm
+      nsr_to_af_per_hour: 0.001
+      af_to_nsr_per_hour: 0.10
+      nsr_to_vt_per_hour: 0.0001
+      vt_to_nsr_per_hour: 0.90
+
+    activity_params:
+      resting_hr_bpm: 55
+      max_hr_bpm: 130
+      daily_active_minutes_min: 30
+      daily_active_minutes_max: 90
+      circadian_amplitude: 0.15     # fractional HR swing dawn-to-dusk
+
+    medication_effects:
+      beta_blocker:
+        hr_reduction_fraction: 0.12
+        av_conduction_delay_ms: 10
+      ace_inhibitor:
+        hr_reduction_fraction: 0.0
+        av_conduction_delay_ms: 0
+
+  # ---------------------------------------------------------------------------
+  # P-002  Complete Heart Block — no comorbidities
+  # ---------------------------------------------------------------------------
+  - patient_id: P-002
+    label: "Complete Heart Block — Otherwise Healthy"
+    primary_diagnosis: complete_heart_block
+    device_type: DDD
+    demographics:
+      age: 65
+      sex: male
+      bmi: 25.0
+    comorbidities: []
+    heart_failure_nyha: null
+    af_burden_fraction: 0.0
+    vt_risk_annual: 0.003
+    pacing_dependency: 0.95         # near-complete pacing dependence
+
+    rhythm_transition_overrides:
+      nsr_to_af_per_hour: 0.0005
+      af_to_nsr_per_hour: 0.20
+      nsr_to_vt_per_hour: 0.00005
+      vt_to_nsr_per_hour: 0.95
+
+    activity_params:
+      resting_hr_bpm: 38            # underlying junctional escape
+      max_hr_bpm: 150
+      daily_active_minutes_min: 60
+      daily_active_minutes_max: 150
+      circadian_amplitude: 0.20
+
+    medication_effects: {}
+
+  # ---------------------------------------------------------------------------
+  # P-003  Paroxysmal AF + Bradycardia — HF NYHA II + Diabetes
+  # ---------------------------------------------------------------------------
+  - patient_id: P-003
+    label: "Paroxysmal AF with Bradycardia — HF + Diabetes"
+    primary_diagnosis: paroxysmal_af_with_bradycardia
+    device_type: DDD
+    demographics:
+      age: 78
+      sex: male
+      bmi: 31.2
+    comorbidities:
+      - heart_failure
+      - diabetes_type2
+    heart_failure_nyha: 2
+    af_burden_fraction: 0.30        # 30 % AF
+    vt_risk_annual: 0.02
+    pacing_dependency: 0.55
+
+    rhythm_transition_overrides:
+      nsr_to_af_per_hour: 0.06
+      af_to_nsr_per_hour: 0.04
+      nsr_to_vt_per_hour: 0.0005
+      vt_to_nsr_per_hour: 0.85
+
+    activity_params:
+      resting_hr_bpm: 62
+      max_hr_bpm: 120
+      daily_active_minutes_min: 15
+      daily_active_minutes_max: 60
+      circadian_amplitude: 0.10
+
+    medication_effects:
+      beta_blocker:
+        hr_reduction_fraction: 0.15
+        av_conduction_delay_ms: 15
+      digoxin:
+        hr_reduction_fraction: 0.08
+        av_conduction_delay_ms: 20
+      metformin:
+        hr_reduction_fraction: 0.0
+        av_conduction_delay_ms: 0
+
+  # ---------------------------------------------------------------------------
+  # P-004  Ischemic CMP + VT — CRT-D, HF NYHA III + CKD
+  # ---------------------------------------------------------------------------
+  - patient_id: P-004
+    label: "Ischemic Cardiomyopathy with VT — Advanced HF + CKD"
+    primary_diagnosis: ischemic_cardiomyopathy_with_vt
+    device_type: CRT_D
+    demographics:
+      age: 58
+      sex: male
+      bmi: 29.0
+    comorbidities:
+      - heart_failure
+      - chronic_kidney_disease
+    heart_failure_nyha: 3
+    af_burden_fraction: 0.10
+    vt_risk_annual: 0.15            # high VT/VF risk
+    pacing_dependency: 0.70
+
+    rhythm_transition_overrides:
+      nsr_to_af_per_hour: 0.01
+      af_to_nsr_per_hour: 0.06
+      nsr_to_vt_per_hour: 0.003
+      vt_to_nsr_per_hour: 0.60      # some self-terminating VT
+      vt_to_vf_per_hour: 0.05       # can degenerate
+
+    activity_params:
+      resting_hr_bpm: 72
+      max_hr_bpm: 110
+      daily_active_minutes_min: 10
+      daily_active_minutes_max: 45
+      circadian_amplitude: 0.08
+
+    medication_effects:
+      beta_blocker:
+        hr_reduction_fraction: 0.18
+        av_conduction_delay_ms: 12
+      amiodarone:
+        hr_reduction_fraction: 0.10
+        av_conduction_delay_ms: 25
+      ace_inhibitor:
+        hr_reduction_fraction: 0.0
+        av_conduction_delay_ms: 0
+
+  # ---------------------------------------------------------------------------
+  # P-005  Idiopathic DCM — CRT-D, NYHA II, younger patient
+  # ---------------------------------------------------------------------------
+  - patient_id: P-005
+    label: "Idiopathic Dilated Cardiomyopathy — Moderate HF"
+    primary_diagnosis: idiopathic_dilated_cardiomyopathy
+    device_type: CRT_D
+    demographics:
+      age: 45
+      sex: female
+      bmi: 24.5
+    comorbidities:
+      - heart_failure
+    heart_failure_nyha: 2
+    af_burden_fraction: 0.05
+    vt_risk_annual: 0.06
+    pacing_dependency: 0.80
+
+    rhythm_transition_overrides:
+      nsr_to_af_per_hour: 0.005
+      af_to_nsr_per_hour: 0.08
+      nsr_to_vt_per_hour: 0.001
+      vt_to_nsr_per_hour: 0.70
+
+    activity_params:
+      resting_hr_bpm: 68
+      max_hr_bpm: 140
+      daily_active_minutes_min: 30
+      daily_active_minutes_max: 90
+      circadian_amplitude: 0.18
+
+    medication_effects:
+      beta_blocker:
+        hr_reduction_fraction: 0.15
+        av_conduction_delay_ms: 10
+      ace_inhibitor:
+        hr_reduction_fraction: 0.0
+        av_conduction_delay_ms: 0
+      diuretic:
+        hr_reduction_fraction: 0.0
+        av_conduction_delay_ms: 0
+
+  # ---------------------------------------------------------------------------
+  # P-006  Post Aortic-Valve Replacement + CHB — VVI, elderly
+  # ---------------------------------------------------------------------------
+  - patient_id: P-006
+    label: "Post Aortic-Valve Replacement with CHB — VVI Pacing"
+    primary_diagnosis: post_avr_complete_heart_block
+    device_type: VVI
+    demographics:
+      age: 82
+      sex: male
+      bmi: 26.8
+    comorbidities:
+      - hypertension
+      - aortic_stenosis_s_p_avr
+    heart_failure_nyha: null
+    af_burden_fraction: 0.08
+    vt_risk_annual: 0.01
+    pacing_dependency: 0.98         # near 100 %
+
+    rhythm_transition_overrides:
+      nsr_to_af_per_hour: 0.008
+      af_to_nsr_per_hour: 0.06
+      nsr_to_vt_per_hour: 0.0002
+      vt_to_nsr_per_hour: 0.85
+
+    activity_params:
+      resting_hr_bpm: 35            # complete block escape
+      max_hr_bpm: 105
+      daily_active_minutes_min: 10
+      daily_active_minutes_max: 40
+      circadian_amplitude: 0.08
+
+    medication_effects:
+      beta_blocker:
+        hr_reduction_fraction: 0.10
+        av_conduction_delay_ms: 0     # already complete block
+      warfarin:
+        hr_reduction_fraction: 0.0
+        av_conduction_delay_ms: 0
+
+  # ---------------------------------------------------------------------------
+  # P-007  Young Athlete with CHB — DDD, very active
+  # ---------------------------------------------------------------------------
+  - patient_id: P-007
+    label: "Young Athlete with Congenital CHB — High Activity"
+    primary_diagnosis: congenital_complete_heart_block
+    device_type: DDD
+    demographics:
+      age: 28
+      sex: male
+      bmi: 22.0
+    comorbidities: []
+    heart_failure_nyha: null
+    af_burden_fraction: 0.0
+    vt_risk_annual: 0.002
+    pacing_dependency: 0.90
+
+    rhythm_transition_overrides:
+      nsr_to_af_per_hour: 0.0001
+      af_to_nsr_per_hour: 0.30
+      nsr_to_vt_per_hour: 0.00003
+      vt_to_nsr_per_hour: 0.98
+
+    activity_params:
+      resting_hr_bpm: 42            # athletic bradycardia + CHB
+      max_hr_bpm: 185
+      daily_active_minutes_min: 120
+      daily_active_minutes_max: 300
+      circadian_amplitude: 0.25
+
+    medication_effects: {}
+
+  # ---------------------------------------------------------------------------
+  # P-008  AF with Tachy-Brady Syndrome — very high AF burden
+  # ---------------------------------------------------------------------------
+  - patient_id: P-008
+    label: "AF with Tachy-Brady Syndrome — High AF Burden"
+    primary_diagnosis: af_tachy_brady_syndrome
+    device_type: DDD
+    demographics:
+      age: 70
+      sex: female
+      bmi: 28.3
+    comorbidities:
+      - hypertension
+      - hyperlipidemia
+    heart_failure_nyha: null
+    af_burden_fraction: 0.60        # 60 % AF
+    vt_risk_annual: 0.008
+    pacing_dependency: 0.35
+
+    rhythm_transition_overrides:
+      nsr_to_af_per_hour: 0.15
+      af_to_nsr_per_hour: 0.02      # prolonged AF episodes
+      nsr_to_vt_per_hour: 0.0002
+      vt_to_nsr_per_hour: 0.90
+
+    activity_params:
+      resting_hr_bpm: 58
+      max_hr_bpm: 125
+      daily_active_minutes_min: 20
+      daily_active_minutes_max: 70
+      circadian_amplitude: 0.12
+
+    medication_effects:
+      beta_blocker:
+        hr_reduction_fraction: 0.14
+        av_conduction_delay_ms: 12
+      flecainide:
+        hr_reduction_fraction: 0.05
+        av_conduction_delay_ms: 18
+      anticoagulant:
+        hr_reduction_fraction: 0.0
+        av_conduction_delay_ms: 0
+
+  # ---------------------------------------------------------------------------
+  # P-009  Hypertrophic Cardiomyopathy + VT Risk — ICD
+  # ---------------------------------------------------------------------------
+  - patient_id: P-009
+    label: "Hypertrophic Cardiomyopathy — Primary Prevention ICD"
+    primary_diagnosis: hypertrophic_cardiomyopathy
+    device_type: ICD
+    demographics:
+      age: 35
+      sex: male
+      bmi: 24.0
+    comorbidities: []
+    heart_failure_nyha: null
+    af_burden_fraction: 0.03
+    vt_risk_annual: 0.08            # significant SCD risk
+    pacing_dependency: 0.0          # no pacing need
+
+    rhythm_transition_overrides:
+      nsr_to_af_per_hour: 0.003
+      af_to_nsr_per_hour: 0.12
+      nsr_to_vt_per_hour: 0.0015
+      vt_to_nsr_per_hour: 0.65
+      vt_to_vf_per_hour: 0.08
+
+    activity_params:
+      resting_hr_bpm: 62
+      max_hr_bpm: 165
+      daily_active_minutes_min: 45
+      daily_active_minutes_max: 120
+      circadian_amplitude: 0.22
+
+    medication_effects:
+      beta_blocker:
+        hr_reduction_fraction: 0.20
+        av_conduction_delay_ms: 8
+
+  # ---------------------------------------------------------------------------
+  # P-010  Elderly with Multiple Comorbidities — VVI, frail
+  # ---------------------------------------------------------------------------
+  - patient_id: P-010
+    label: "Elderly Multi-Morbid — Conservative VVI Pacing"
+    primary_diagnosis: tachy_brady_syndrome
+    device_type: VVI
+    demographics:
+      age: 88
+      sex: female
+      bmi: 22.5
+    comorbidities:
+      - hypertension
+      - diabetes_type2
+      - chronic_kidney_disease
+      - copd
+      - osteoporosis
+    heart_failure_nyha: 2
+    af_burden_fraction: 0.40
+    vt_risk_annual: 0.03
+    pacing_dependency: 0.60
+
+    rhythm_transition_overrides:
+      nsr_to_af_per_hour: 0.08
+      af_to_nsr_per_hour: 0.03
+      nsr_to_vt_per_hour: 0.0006
+      vt_to_nsr_per_hour: 0.75
+
+    activity_params:
+      resting_hr_bpm: 64
+      max_hr_bpm: 100
+      daily_active_minutes_min: 5
+      daily_active_minutes_max: 25
+      circadian_amplitude: 0.06
+
+    medication_effects:
+      beta_blocker:
+        hr_reduction_fraction: 0.12
+        av_conduction_delay_ms: 15
+      digoxin:
+        hr_reduction_fraction: 0.06
+        av_conduction_delay_ms: 18
+      metformin:
+        hr_reduction_fraction: 0.0
+        av_conduction_delay_ms: 0
+      diuretic:
+        hr_reduction_fraction: 0.0
+        av_conduction_delay_ms: 0
+      inhaler:
+        hr_reduction_fraction: -0.03   # slight sympathomimetic
+        av_conduction_delay_ms: 0

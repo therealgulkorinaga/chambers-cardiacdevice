@@ -1,0 +1,44 @@
+graph LR
+    subgraph "Layer 1: On-Device"
+        A[Implanted Pacemaker<br/>128KB-2MB Memory<br/>HR, Rhythm, IEGM, Episodes]
+    end
+
+    subgraph "Layer 2: Transmitter"
+        B[Bedside Monitor / Phone<br/>BLE 4.2 / Proprietary RF<br/>Cache until uploaded]
+    end
+
+    subgraph "Layer 3: Manufacturer Cloud"
+        C[Cloud Platform<br/>INDEFINITE RETENTION<br/>All data stored permanently]
+    end
+
+    subgraph "Layer 4: Clinician Portal"
+        D[Physician Portal<br/>Alert Queue + Reports<br/>Copy persists in cloud]
+    end
+
+    subgraph "Layer 5: Aggregate Pool"
+        E[Population Analytics<br/>De-identified aggregates<br/>R&D + Regulatory + Commercial]
+    end
+
+    subgraph "Consumers"
+        F[Treating Clinician]
+        G[Hospital EMR]
+        H[Insurer - Claims Only]
+        I[Regulator - On Request]
+        J[Patient App - Filtered View]
+    end
+
+    A -->|"Daily check + Full interrogation"| B
+    B -->|"HTTPS upload"| C
+    C -->|"Portal access"| D
+    C -->|"Monthly batch"| E
+    D -->|"Review alerts"| F
+    C -->|"HL7/FHIR export"| G
+    C -->|"Claims data"| H
+    C -->|"On request"| I
+    C -->|"Filtered view"| J
+
+    style A fill:#4a9eff,stroke:#333,color:#fff
+    style B fill:#ffa64d,stroke:#333,color:#fff
+    style C fill:#ff4d4d,stroke:#333,color:#fff
+    style D fill:#ff8080,stroke:#333,color:#fff
+    style E fill:#ff4d4d,stroke:#333,color:#fff

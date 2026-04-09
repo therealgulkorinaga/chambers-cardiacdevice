@@ -1,0 +1,193 @@
+# =============================================================================
+# Chamber Sentinel CIED Simulator — Device Profiles
+# =============================================================================
+# Each entry describes the technical characteristics of a specific CIED type.
+# These profiles are loaded and validated by src/config/models.py at start-up.
+# =============================================================================
+
+devices:
+
+  # ---------------------------------------------------------------------------
+  # VVI — Single-chamber ventricular pacemaker
+  # ---------------------------------------------------------------------------
+  - device_type: VVI
+    description: >-
+      Single-chamber ventricular demand pacemaker.  Senses and paces the
+      ventricle only.  Commonly used as a backup or in patients with chronic
+      atrial fibrillation where atrial pacing provides no benefit.
+    pacing_modes:
+      - VVI
+      - VVO   # asynchronous fallback
+    channels:
+      - ventricular
+    memory_kb: 256
+    battery:
+      chemistry: LiCFx
+      voltage_bol: 3.2      # beginning of life (V)
+      voltage_eri: 2.6      # elective replacement indicator (V)
+      voltage_eos: 2.0      # end of service (V)
+      longevity_years_min: 8
+      longevity_years_max: 12
+    leads:
+      - position: RV_apex
+        impedance_ohms_min: 300
+        impedance_ohms_max: 1500
+    sample_rate_hz: 256
+    transmission:
+      daily_check_bytes: 512
+      full_interrogation_kb: 64
+      protocol: RF_MICS
+
+  # ---------------------------------------------------------------------------
+  # DDD — Dual-chamber pacemaker
+  # ---------------------------------------------------------------------------
+  - device_type: DDD
+    description: >-
+      Dual-chamber pacemaker capable of sensing and pacing both the atrium and
+      ventricle.  Supports AV-synchrony and rate-responsive modes.
+    pacing_modes:
+      - DDD
+      - DDI
+      - VVI   # fallback
+      - AAI
+      - DOO   # asynchronous
+    channels:
+      - atrial
+      - ventricular
+    memory_kb: 512
+    battery:
+      chemistry: LiCFx
+      voltage_bol: 3.2
+      voltage_eri: 2.6
+      voltage_eos: 2.0
+      longevity_years_min: 7
+      longevity_years_max: 11
+    leads:
+      - position: RA_appendage
+        impedance_ohms_min: 300
+        impedance_ohms_max: 1500
+      - position: RV_apex
+        impedance_ohms_min: 300
+        impedance_ohms_max: 1500
+    sample_rate_hz: 256
+    transmission:
+      daily_check_bytes: 1024
+      full_interrogation_kb: 128
+      protocol: RF_MICS
+
+  # ---------------------------------------------------------------------------
+  # CRT-D — Cardiac Resynchronization Therapy Defibrillator
+  # ---------------------------------------------------------------------------
+  - device_type: CRT_D
+    description: >-
+      Biventricular ICD providing cardiac resynchronization therapy plus
+      defibrillation.  Used in patients with heart failure and wide QRS.
+    pacing_modes:
+      - DDD
+      - DDI
+      - VVI
+      - CRT   # biventricular pacing
+    channels:
+      - atrial
+      - ventricular
+      - lv_coronary_sinus
+      - shock
+    memory_kb: 2048
+    battery:
+      chemistry: LiSVO_CFx   # hybrid chemistry for high-voltage
+      voltage_bol: 3.2
+      voltage_eri: 2.55
+      voltage_eos: 1.95
+      longevity_years_min: 5
+      longevity_years_max: 9
+    leads:
+      - position: RA_appendage
+        impedance_ohms_min: 300
+        impedance_ohms_max: 1500
+      - position: RV_apex_coil
+        impedance_ohms_min: 300
+        impedance_ohms_max: 1500
+      - position: LV_coronary_sinus
+        impedance_ohms_min: 300
+        impedance_ohms_max: 2000
+    sample_rate_hz: 512
+    transmission:
+      daily_check_bytes: 2048
+      full_interrogation_kb: 512
+      protocol: RF_MICS
+
+  # ---------------------------------------------------------------------------
+  # CRT-P — Cardiac Resynchronization Therapy Pacemaker (no defib)
+  # ---------------------------------------------------------------------------
+  - device_type: CRT_P
+    description: >-
+      Biventricular pacemaker providing cardiac resynchronization therapy
+      without defibrillation capability.
+    pacing_modes:
+      - DDD
+      - DDI
+      - VVI
+      - CRT
+    channels:
+      - atrial
+      - ventricular
+      - lv_coronary_sinus
+    memory_kb: 1024
+    battery:
+      chemistry: LiCFx
+      voltage_bol: 3.2
+      voltage_eri: 2.6
+      voltage_eos: 2.0
+      longevity_years_min: 6
+      longevity_years_max: 10
+    leads:
+      - position: RA_appendage
+        impedance_ohms_min: 300
+        impedance_ohms_max: 1500
+      - position: RV_apex
+        impedance_ohms_min: 300
+        impedance_ohms_max: 1500
+      - position: LV_coronary_sinus
+        impedance_ohms_min: 300
+        impedance_ohms_max: 2000
+    sample_rate_hz: 256
+    transmission:
+      daily_check_bytes: 1536
+      full_interrogation_kb: 256
+      protocol: RF_MICS
+
+  # ---------------------------------------------------------------------------
+  # ICD — Implantable Cardioverter-Defibrillator (single/dual chamber)
+  # ---------------------------------------------------------------------------
+  - device_type: ICD
+    description: >-
+      Single- or dual-chamber implantable cardioverter-defibrillator for
+      primary or secondary prevention of sudden cardiac death.
+    pacing_modes:
+      - VVI
+      - DDD
+      - DDI
+    channels:
+      - atrial
+      - ventricular
+      - shock
+    memory_kb: 1536
+    battery:
+      chemistry: LiSVO_CFx
+      voltage_bol: 3.2
+      voltage_eri: 2.55
+      voltage_eos: 1.95
+      longevity_years_min: 5
+      longevity_years_max: 10
+    leads:
+      - position: RA_appendage
+        impedance_ohms_min: 300
+        impedance_ohms_max: 1500
+      - position: RV_apex_coil
+        impedance_ohms_min: 300
+        impedance_ohms_max: 1500
+    sample_rate_hz: 512
+    transmission:
+      daily_check_bytes: 1536
+      full_interrogation_kb: 256
+      protocol: RF_MICS

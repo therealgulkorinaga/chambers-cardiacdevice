@@ -1,0 +1,391 @@
+# =============================================================================
+# Chamber Sentinel CIED Simulator — Scenario Definitions
+# =============================================================================
+# Each scenario describes a reproducible experiment that exercises the
+# simulator under specific conditions.  Scenarios specify the patient
+# cohort, simulation duration, scheduled event injections, and which
+# metrics should be captured for analysis.
+# =============================================================================
+
+scenarios:
+
+  # ---------------------------------------------------------------------------
+  # 1. Baseline single patient — sanity check / demonstration
+  # ---------------------------------------------------------------------------
+  - name: baseline_single_patient
+    description: >-
+      Run a single patient (P-002, complete heart block) for one year with
+      no event injections.  Serves as a smoke test and baseline reference for
+      both current-arch and Chambers-arch data-flow metrics.
+    cohort:
+      mode: explicit
+      patients:
+        - P-002
+    duration_days: 365
+    clock_speed: 10.0
+    event_injections: []
+    metrics_to_track:
+      - persistence_volume_over_time
+      - attack_surface_over_time
+      - daily_transmission_bytes
+      - pacing_percentage
+
+  # ---------------------------------------------------------------------------
+  # 2. AF detection and alert
+  # ---------------------------------------------------------------------------
+  - name: af_detection_and_alert
+    description: >-
+      Patient P-003 (paroxysmal AF, 30 % burden) develops a prolonged AF
+      episode at day 30 that lasts 48 hours.  Validates that the simulator
+      correctly triggers device-detected AF alerts and measures the
+      data-flow differences between architectures when an alert must reach
+      the clinician.
+    cohort:
+      mode: explicit
+      patients:
+        - P-003
+    duration_days: 90
+    clock_speed: 20.0
+    event_injections:
+      - day: 30
+        event_type: force_rhythm
+        params:
+          rhythm: atrial_fibrillation
+          duration_hours: 48
+      - day: 60
+        event_type: force_rhythm
+        params:
+          rhythm: atrial_fibrillation
+          duration_hours: 72
+    metrics_to_track:
+      - persistence_volume_over_time
+      - attack_surface_over_time
+      - af_burden_daily
+      - alert_latency_seconds
+      - data_copies_at_alert
+
+  # ---------------------------------------------------------------------------
+  # 3. Lead fracture — adverse event
+  # ---------------------------------------------------------------------------
+  - name: lead_fracture_adverse_event
+    description: >-
+      Patient P-001 experiences a gradual RV lead impedance rise starting at
+      day 90, culminating in a lead fracture at day 120.  This stresses the
+      device-maintenance data path and tests how each architecture handles a
+      safety-critical adverse event that may require retrospective data
+      review.
+    cohort:
+      mode: explicit
+      patients:
+        - P-001
+    duration_days: 180
+    clock_speed: 15.0
+    event_injections:
+      - day: 90
+        event_type: lead_impedance_drift
+        params:
+          lead_position: RV_apex
+          target_impedance_ohms: 2500
+          drift_duration_days: 30
+      - day: 120
+        event_type: lead_fracture
+        params:
+          lead_position: RV_apex
+          impedance_ohms_post_fracture: 5000
+          noise_amplitude_mv: 8.0
+      - day: 121
+        event_type: clinical_alert
+        params:
+          alert_type: lead_integrity_alert
+          severity: critical
+    metrics_to_track:
+      - persistence_volume_over_time
+      - attack_surface_over_time
+      - lead_impedance_trend
+      - noise_counts_daily
+      - data_available_for_retrospective_review
+      - alert_latency_seconds
+
+  # ---------------------------------------------------------------------------
+  # 4. Battery end-of-life transition
+  # ---------------------------------------------------------------------------
+  - name: battery_eol_transition
+    description: >-
+      Accelerate battery depletion for patient P-006 (VVI, post-AVR) so
+      that the device transitions through ERI and into EOS within the
+      simulation window.  Measures how each architecture preserves (or burns)
+      diagnostic data across the generator-change event.
+    cohort:
+      mode: explicit
+      patients:
+        - P-006
+    duration_days: 365
+    clock_speed: 50.0
+    event_injections:
+      - day: 0
+        event_type: set_battery_voltage
+        params:
+          voltage: 2.75
+      - day: 120
+        event_type: battery_eri_reached
+        params:
+          mode_switch_to: VVI
+          rate_cap_bpm: 65
+      - day: 240
+        event_type: battery_eos_reached
+        params:
+          mode_switch_to: VOO
+          rate_cap_bpm: 65
+      - day: 270
+        event_type: generator_replacement
+        params:
+          new_device_type: VVI
+          reset_battery: true
+    metrics_to_track:
+      - persistence_volume_over_time
+      - attack_surface_over_time
+      - battery_voltage_trend
+      - pacing_mode_timeline
+      - data_continuity_across_replacement
+
+  # ---------------------------------------------------------------------------
+  # 5. Clinician-latency stress test
+  # ---------------------------------------------------------------------------
+  - name: clinician_latency_stress
+    description: >-
+      Simulate delayed clinician acknowledgement for patient P-004 (CRT-D,
+      ischemic VT).  The device fires multiple VT/VF therapies but the
+      clinician does not review data for 5 days.  In Chambers-arch,
+      relay-TTL pressure rises; in current-arch, data accumulates
+      indefinitely.
+    cohort:
+      mode: explicit
+      patients:
+        - P-004
+    duration_days: 30
+    clock_speed: 5.0
+    event_injections:
+      - day: 3
+        event_type: force_rhythm
+        params:
+          rhythm: ventricular_tachycardia
+          duration_hours: 0.5
+      - day: 3
+        event_type: therapy_delivered
+        params:
+          therapy_type: atp
+          success: true
+      - day: 5
+        event_type: force_rhythm
+        params:
+          rhythm: ventricular_fibrillation
+          duration_hours: 0.05
+      - day: 5
+        event_type: therapy_delivered
+        params:
+          therapy_type: shock
+          energy_joules: 35
+          success: true
+      - day: 8
+        event_type: clinician_ack
+        params:
+          ack_all_pending: true
+      - day: 15
+        event_type: force_rhythm
+        params:
+          rhythm: ventricular_tachycardia
+          duration_hours: 1.0
+      - day: 15
+        event_type: therapy_delivered
+        params:
+          therapy_type: shock
+          energy_joules: 35
+          success: true
+      - day: 25
+        event_type: clinician_ack
+        params:
+          ack_all_pending: true
+    metrics_to_track:
+      - persistence_volume_over_time
+      - attack_surface_over_time
+      - relay_queue_depth
+      - relay_ttl_remaining
+      - therapy_history_available
+      - alert_latency_seconds
+
+  # ---------------------------------------------------------------------------
+  # 6. Provider transition (patient changes clinic)
+  # ---------------------------------------------------------------------------
+  - name: provider_transition
+    description: >-
+      Patient P-005 (CRT-D, idiopathic DCM) transitions from Provider A to
+      Provider B at day 180.  In current-arch, a bulk data transfer occurs;
+      in Chambers-arch, the patient's consent ledger is updated and only the
+      portable record is shared.
+    cohort:
+      mode: explicit
+      patients:
+        - P-005
+    duration_days: 365
+    clock_speed: 20.0
+    event_injections:
+      - day: 180
+        event_type: provider_transition
+        params:
+          from_provider: provider_a
+          to_provider: provider_b
+          transfer_method_current_arch: bulk_data_export
+          transfer_method_chambers_arch: portable_record_handoff
+      - day: 181
+        event_type: consent_update
+        params:
+          revoke_from: provider_a
+          grant_to: provider_b
+          worlds:
+            - clinical
+            - device_maintenance
+    metrics_to_track:
+      - persistence_volume_over_time
+      - attack_surface_over_time
+      - data_copies_per_provider
+      - records_accessible_by_old_provider
+      - portable_record_size_kb
+      - transition_latency_hours
+
+  # ---------------------------------------------------------------------------
+  # 7. Population-scale mixed cohort (1 000 patients)
+  # ---------------------------------------------------------------------------
+  - name: population_1000_mixed
+    description: >-
+      A mixed-acuity population of 1 000 virtual patients drawn
+      proportionally from all ten archetypes.  Designed to benchmark
+      aggregate data volume, attack surface, and throughput at scale.
+    cohort:
+      mode: distribution
+      total_patients: 1000
+      distribution:
+        P-001: 0.20
+        P-002: 0.10
+        P-003: 0.12
+        P-004: 0.08
+        P-005: 0.08
+        P-006: 0.10
+        P-007: 0.05
+        P-008: 0.12
+        P-009: 0.05
+        P-010: 0.10
+    duration_days: 365
+    clock_speed: 100.0
+    event_injections:
+      - day: 90
+        event_type: random_lead_fracture
+        params:
+          affected_fraction: 0.005
+      - day: 180
+        event_type: random_battery_eri
+        params:
+          affected_fraction: 0.02
+      - day: 270
+        event_type: random_provider_transition
+        params:
+          affected_fraction: 0.03
+    metrics_to_track:
+      - persistence_volume_over_time
+      - attack_surface_over_time
+      - total_data_at_rest_gb
+      - mean_copies_per_patient
+      - aggregate_pool_size_gb
+      - population_af_burden_distribution
+      - therapy_count_distribution
+
+  # ---------------------------------------------------------------------------
+  # 8. Law-enforcement access request
+  # ---------------------------------------------------------------------------
+  - name: law_enforcement_access
+    description: >-
+      At day 60, a law-enforcement agency issues a court order demanding
+      cardiac telemetry for patient P-009 (HCM, ICD).  Compares how much
+      data is available and how many entities must be contacted under each
+      architecture.
+    cohort:
+      mode: explicit
+      patients:
+        - P-009
+    duration_days: 120
+    clock_speed: 15.0
+    event_injections:
+      - day: 60
+        event_type: law_enforcement_request
+        params:
+          requesting_agency: metro_police_department
+          legal_instrument: court_order
+          date_range_requested_days: 60
+          data_types_requested:
+            - egm_strips
+            - therapy_history
+            - activity_logs
+            - heart_rate_trends
+    metrics_to_track:
+      - persistence_volume_over_time
+      - attack_surface_over_time
+      - data_available_to_requester_mb
+      - entities_holding_data
+      - identifiable_records_exposed
+      - burned_records_not_available
+      - relay_data_within_ttl
+
+  # ---------------------------------------------------------------------------
+  # 9. Cybersecurity breach
+  # ---------------------------------------------------------------------------
+  - name: cybersecurity_breach
+    description: >-
+      At day 45, a simulated breach compromises the cloud layer (current-arch)
+      or the relay node (Chambers-arch).  Measures how much patient data is
+      exposed in each architecture at the moment of breach, accounting for
+      retention policies, burn-after-ack, and TTL expiry.
+    cohort:
+      mode: explicit
+      patients:
+        - P-004
+        - P-008
+        - P-010
+    duration_days: 90
+    clock_speed: 10.0
+    event_injections:
+      - day: 15
+        event_type: clinician_ack
+        params:
+          patient_id: P-004
+          ack_all_pending: true
+      - day: 20
+        event_type: clinician_ack
+        params:
+          patient_id: P-008
+          ack_all_pending: true
+      - day: 30
+        event_type: clinician_ack
+        params:
+          patient_id: P-010
+          ack_all_pending: true
+      - day: 45
+        event_type: cybersecurity_breach
+        params:
+          target_current_arch: cloud_layer
+          target_chambers_arch: relay_node
+          exfiltration_window_hours: 4
+      - day: 45
+        event_type: breach_detected
+        params:
+          detection_delay_hours: 2
+      - day: 46
+        event_type: incident_response
+        params:
+          action: rotate_keys_and_isolate
+    metrics_to_track:
+      - persistence_volume_over_time
+      - attack_surface_over_time
+      - data_exposed_at_breach_mb
+      - identifiable_records_exposed
+      - burned_records_not_exposed
+      - time_to_detection_hours
+      - residual_exposure_after_response_mb

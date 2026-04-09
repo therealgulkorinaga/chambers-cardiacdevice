@@ -1,0 +1,51 @@
+graph LR
+    subgraph "Device"
+        A[Implanted Pacemaker<br/>Same as current arch]
+    end
+
+    subgraph "Transmitter"
+        B[Bedside / Phone<br/>Same as current arch]
+    end
+
+    subgraph "Relay - 72h TTL"
+        R[Stateless Relay<br/>Process + Route + Burn<br/>No persistent storage]
+    end
+
+    subgraph "Typed Worlds"
+        CW[Clinical World<br/>Full-fidelity IEGMs<br/>Burns after delivery + ACK]
+        DM[Device Maintenance<br/>Lead/Battery/Firmware only<br/>Rolling 90-day window]
+        RW[Research World<br/>Consent-gated<br/>k-anonymity + diff privacy]
+        SI[Safety Investigation<br/>Adverse event holds<br/>Time-limited + buffer]
+    end
+
+    subgraph "Patient Control"
+        PW[Patient World<br/>Portable Record<br/>Patient-controlled retention<br/>FHIR R4 format]
+    end
+
+    subgraph "Access"
+        CL[Clinician - via Clinical World]
+        EM[Emergency - via Patient Record]
+        RS[Researcher - via Research World]
+    end
+
+    A -->|"Same protocol"| B
+    B -->|"HTTPS"| R
+    R -->|"Route clinical"| CW
+    R -->|"Route device data"| DM
+    R -->|"Route if consented"| RW
+    R -->|"Deliver all"| PW
+    R -.->|"Hold on adverse event"| SI
+
+    CW -->|"After ACK"| PW
+    CW -->|"Review"| CL
+    PW -->|"Emergency access"| EM
+    RW -->|"Governed access"| RS
+
+    style A fill:#4a9eff,stroke:#333,color:#fff
+    style B fill:#ffa64d,stroke:#333,color:#fff
+    style R fill:#51cf66,stroke:#333,color:#fff
+    style CW fill:#74c0fc,stroke:#333,color:#fff
+    style DM fill:#a9e34b,stroke:#333,color:#fff
+    style RW fill:#ffd43b,stroke:#333,color:#000
+    style SI fill:#ff922b,stroke:#333,color:#fff
+    style PW fill:#da77f2,stroke:#333,color:#fff

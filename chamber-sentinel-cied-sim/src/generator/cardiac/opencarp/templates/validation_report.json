@@ -1,0 +1,344 @@
+{
+  "templates_dir": "/Users/arkoganguli/Projects/medical-devices/cardiac-devices/chamber-sentinel-cied-sim/src/generator/cardiac/opencarp/templates",
+  "all_passed": false,
+  "catalog_complete": false,
+  "missing_rhythms": [
+    "junctional_rhythm",
+    "mobitz_type_i",
+    "mobitz_type_ii",
+    "normal_sinus_rhythm",
+    "premature_atrial_complex",
+    "premature_ventricular_complex",
+    "supraventricular_tachycardia"
+  ],
+  "rhythms": [
+    {
+      "rhythm": "normal_sinus_rhythm",
+      "passed": false,
+      "checks": [
+        {
+          "check": "in_catalog",
+          "passed": false,
+          "detail": "missing"
+        }
+      ]
+    },
+    {
+      "rhythm": "sinus_bradycardia",
+      "passed": false,
+      "checks": [
+        {
+          "check": "atrial_file_exists",
+          "passed": false,
+          "detail": "File not found: /Users/arkoganguli/Projects/medical-devices/cardiac-devices/chamber-sentinel-cied-sim/src/generator/cardiac/opencarp/templates/sinus_bradycardia/atrial.npy"
+        },
+        {
+          "check": "shock_file_exists",
+          "passed": false,
+          "detail": "File not found: /Users/arkoganguli/Projects/medical-devices/cardiac-devices/chamber-sentinel-cied-sim/src/generator/cardiac/opencarp/templates/sinus_bradycardia/shock.npy"
+        },
+        {
+          "check": "ventricular_file_exists",
+          "passed": false,
+          "detail": "File not found: /Users/arkoganguli/Projects/medical-devices/cardiac-devices/chamber-sentinel-cied-sim/src/generator/cardiac/opencarp/templates/sinus_bradycardia/ventricular.npy"
+        }
+      ]
+    },
+    {
+      "rhythm": "sinus_tachycardia",
+      "passed": false,
+      "checks": [
+        {
+          "check": "atrial_file_exists",
+          "passed": false,
+          "detail": "File not found: /Users/arkoganguli/Projects/medical-devices/cardiac-devices/chamber-sentinel-cied-sim/src/generator/cardiac/opencarp/templates/sinus_tachycardia/atrial.npy"
+        },
+        {
+          "check": "shock_file_exists",
+          "passed": false,
+          "detail": "File not found: /Users/arkoganguli/Projects/medical-devices/cardiac-devices/chamber-sentinel-cied-sim/src/generator/cardiac/opencarp/templates/sinus_tachycardia/shock.npy"
+        },
+        {
+          "check": "ventricular_file_exists",
+          "passed": false,
+          "detail": "File not found: /Users/arkoganguli/Projects/medical-devices/cardiac-devices/chamber-sentinel-cied-sim/src/generator/cardiac/opencarp/templates/sinus_tachycardia/ventricular.npy"
+        }
+      ]
+    },
+    {
+      "rhythm": "atrial_fibrillation",
+      "passed": false,
+      "checks": [
+        {
+          "check": "atrial_file_exists",
+          "passed": false,
+          "detail": "File not found: /Users/arkoganguli/Projects/medical-devices/cardiac-devices/chamber-sentinel-cied-sim/src/generator/cardiac/opencarp/templates/atrial_fibrillation/atrial.npy"
+        },
+        {
+          "check": "shock_file_exists",
+          "passed": false,
+          "detail": "File not found: /Users/arkoganguli/Projects/medical-devices/cardiac-devices/chamber-sentinel-cied-sim/src/generator/cardiac/opencarp/templates/atrial_fibrillation/shock.npy"
+        },
+        {
+          "check": "ventricular_file_exists",
+          "passed": false,
+          "detail": "File not found: /Users/arkoganguli/Projects/medical-devices/cardiac-devices/chamber-sentinel-cied-sim/src/generator/cardiac/opencarp/templates/atrial_fibrillation/ventricular.npy"
+        },
+        {
+          "check": "spectral_atrial_fibrillation",
+          "passed": false,
+          "detail": "Channel file not found for spectral check: /Users/arkoganguli/Projects/medical-devices/cardiac-devices/chamber-sentinel-cied-sim/src/generator/cardiac/opencarp/templates/atrial_fibrillation/atrial.npy"
+        }
+      ]
+    },
+    {
+      "rhythm": "atrial_flutter",
+      "passed": false,
+      "checks": [
+        {
+          "check": "atrial_file_exists",
+          "passed": false,
+          "detail": "File not found: /Users/arkoganguli/Projects/medical-devices/cardiac-devices/chamber-sentinel-cied-sim/src/generator/cardiac/opencarp/templates/atrial_flutter/atrial.npy"
+        },
+        {
+          "check": "shock_file_exists",
+          "passed": false,
+          "detail": "File not found: /Users/arkoganguli/Projects/medical-devices/cardiac-devices/chamber-sentinel-cied-sim/src/generator/cardiac/opencarp/templates/atrial_flutter/shock.npy"
+        },
+        {
+          "check": "ventricular_file_exists",
+          "passed": false,
+          "detail": "File not found: /Users/arkoganguli/Projects/medical-devices/cardiac-devices/chamber-sentinel-cied-sim/src/generator/cardiac/opencarp/templates/atrial_flutter/ventricular.npy"
+        }
+      ]
+    },
+    {
+      "rhythm": "supraventricular_tachycardia",
+      "passed": false,
+      "checks": [
+        {
+          "check": "in_catalog",
+          "passed": false,
+          "detail": "missing"
+        }
+      ]
+    },
+    {
+      "rhythm": "ventricular_tachycardia",
+      "passed": false,
+      "checks": [
+        {
+          "check": "atrial_file_exists",
+          "passed": false,
+          "detail": "File not found: /Users/arkoganguli/Projects/medical-devices/cardiac-devices/chamber-sentinel-cied-sim/src/generator/cardiac/opencarp/templates/ventricular_tachycardia/atrial.npy"
+        },
+        {
+          "check": "shock_file_exists",
+          "passed": false,
+          "detail": "File not found: /Users/arkoganguli/Projects/medical-devices/cardiac-devices/chamber-sentinel-cied-sim/src/generator/cardiac/opencarp/templates/ventricular_tachycardia/shock.npy"
+        },
+        {
+          "check": "ventricular_file_exists",
+          "passed": false,
+          "detail": "File not found: /Users/arkoganguli/Projects/medical-devices/cardiac-devices/chamber-sentinel-cied-sim/src/generator/cardiac/opencarp/templates/ventricular_tachycardia/ventricular.npy"
+        },
+        {
+          "check": "spectral_ventricular_tachycardia",
+          "passed": false,
+          "detail": "Channel file not found for spectral check: /Users/arkoganguli/Projects/medical-devices/cardiac-devices/chamber-sentinel-cied-sim/src/generator/cardiac/opencarp/templates/ventricular_tachycardia/ventricular.npy"
+        }
+      ]
+    },
+    {
+      "rhythm": "ventricular_fibrillation",
+      "passed": false,
+      "checks": [
+        {
+          "check": "atrial_file_exists",
+          "passed": false,
+          "detail": "File not found: /Users/arkoganguli/Projects/medical-devices/cardiac-devices/chamber-sentinel-cied-sim/src/generator/cardiac/opencarp/templates/ventricular_fibrillation/atrial.npy"
+        },
+        {
+          "check": "shock_file_exists",
+          "passed": false,
+          "detail": "File not found: /Users/arkoganguli/Projects/medical-devices/cardiac-devices/chamber-sentinel-cied-sim/src/generator/cardiac/opencarp/templates/ventricular_fibrillation/shock.npy"
+        },
+        {
+          "check": "ventricular_file_exists",
+          "passed": false,
+          "detail": "File not found: /Users/arkoganguli/Projects/medical-devices/cardiac-devices/chamber-sentinel-cied-sim/src/generator/cardiac/opencarp/templates/ventricular_fibrillation/ventricular.npy"
+        },
+        {
+          "check": "spectral_ventricular_fibrillation",
+          "passed": false,
+          "detail": "Channel file not found for spectral check: /Users/arkoganguli/Projects/medical-devices/cardiac-devices/chamber-sentinel-cied-sim/src/generator/cardiac/opencarp/templates/ventricular_fibrillation/ventricular.npy"
+        }
+      ]
+    },
+    {
+      "rhythm": "complete_heart_block",
+      "passed": false,
+      "checks": [
+        {
+          "check": "atrial_file_exists",
+          "passed": false,
+          "detail": "File not found: /Users/arkoganguli/Projects/medical-devices/cardiac-devices/chamber-sentinel-cied-sim/src/generator/cardiac/opencarp/templates/complete_heart_block/atrial.npy"
+        },
+        {
+          "check": "shock_file_exists",
+          "passed": false,
+          "detail": "File not found: /Users/arkoganguli/Projects/medical-devices/cardiac-devices/chamber-sentinel-cied-sim/src/generator/cardiac/opencarp/templates/complete_heart_block/shock.npy"
+        },
+        {
+          "check": "ventricular_file_exists",
+          "passed": false,
+          "detail": "File not found: /Users/arkoganguli/Projects/medical-devices/cardiac-devices/chamber-sentinel-cied-sim/src/generator/cardiac/opencarp/templates/complete_heart_block/ventricular.npy"
+        }
+      ]
+    },
+    {
+      "rhythm": "mobitz_type_i",
+      "passed": false,
+      "checks": [
+        {
+          "check": "in_catalog",
+          "passed": false,
+          "detail": "missing"
+        }
+      ]
+    },
+    {
+      "rhythm": "mobitz_type_ii",
+      "passed": false,
+      "checks": [
+        {
+          "check": "in_catalog",
+          "passed": false,
+          "detail": "missing"
+        }
+      ]
+    },
+    {
+      "rhythm": "premature_ventricular_complex",
+      "passed": false,
+      "checks": [
+        {
+          "check": "in_catalog",
+          "passed": false,
+          "detail": "missing"
+        }
+      ]
+    },
+    {
+      "rhythm": "premature_atrial_complex",
+      "passed": false,
+      "checks": [
+        {
+          "check": "in_catalog",
+          "passed": false,
+          "detail": "missing"
+        }
+      ]
+    },
+    {
+      "rhythm": "junctional_rhythm",
+      "passed": false,
+      "checks": [
+        {
+          "check": "in_catalog",
+          "passed": false,
+          "detail": "missing"
+        }
+      ]
+    },
+    {
+      "rhythm": "paced_aai",
+      "passed": false,
+      "checks": [
+        {
+          "check": "atrial_file_exists",
+          "passed": false,
+          "detail": "File not found: /Users/arkoganguli/Projects/medical-devices/cardiac-devices/chamber-sentinel-cied-sim/src/generator/cardiac/opencarp/templates/paced_aai/atrial.npy"
+        },
+        {
+          "check": "shock_file_exists",
+          "passed": false,
+          "detail": "File not found: /Users/arkoganguli/Projects/medical-devices/cardiac-devices/chamber-sentinel-cied-sim/src/generator/cardiac/opencarp/templates/paced_aai/shock.npy"
+        },
+        {
+          "check": "ventricular_file_exists",
+          "passed": false,
+          "detail": "File not found: /Users/arkoganguli/Projects/medical-devices/cardiac-devices/chamber-sentinel-cied-sim/src/generator/cardiac/opencarp/templates/paced_aai/ventricular.npy"
+        }
+      ]
+    },
+    {
+      "rhythm": "paced_vvi",
+      "passed": false,
+      "checks": [
+        {
+          "check": "atrial_file_exists",
+          "passed": false,
+          "detail": "File not found: /Users/arkoganguli/Projects/medical-devices/cardiac-devices/chamber-sentinel-cied-sim/src/generator/cardiac/opencarp/templates/paced_vvi/atrial.npy"
+        },
+        {
+          "check": "shock_file_exists",
+          "passed": false,
+          "detail": "File not found: /Users/arkoganguli/Projects/medical-devices/cardiac-devices/chamber-sentinel-cied-sim/src/generator/cardiac/opencarp/templates/paced_vvi/shock.npy"
+        },
+        {
+          "check": "ventricular_file_exists",
+          "passed": false,
+          "detail": "File not found: /Users/arkoganguli/Projects/medical-devices/cardiac-devices/chamber-sentinel-cied-sim/src/generator/cardiac/opencarp/templates/paced_vvi/ventricular.npy"
+        }
+      ]
+    },
+    {
+      "rhythm": "paced_ddd",
+      "passed": false,
+      "checks": [
+        {
+          "check": "atrial_file_exists",
+          "passed": false,
+          "detail": "File not found: /Users/arkoganguli/Projects/medical-devices/cardiac-devices/chamber-sentinel-cied-sim/src/generator/cardiac/opencarp/templates/paced_ddd/atrial.npy"
+        },
+        {
+          "check": "shock_file_exists",
+          "passed": false,
+          "detail": "File not found: /Users/arkoganguli/Projects/medical-devices/cardiac-devices/chamber-sentinel-cied-sim/src/generator/cardiac/opencarp/templates/paced_ddd/shock.npy"
+        },
+        {
+          "check": "ventricular_file_exists",
+          "passed": false,
+          "detail": "File not found: /Users/arkoganguli/Projects/medical-devices/cardiac-devices/chamber-sentinel-cied-sim/src/generator/cardiac/opencarp/templates/paced_ddd/ventricular.npy"
+        }
+      ]
+    },
+    {
+      "rhythm": "paced_crt",
+      "passed": false,
+      "checks": [
+        {
+          "check": "atrial_file_exists",
+          "passed": false,
+          "detail": "File not found: /Users/arkoganguli/Projects/medical-devices/cardiac-devices/chamber-sentinel-cied-sim/src/generator/cardiac/opencarp/templates/paced_crt/atrial.npy"
+        },
+        {
+          "check": "shock_file_exists",
+          "passed": false,
+          "detail": "File not found: /Users/arkoganguli/Projects/medical-devices/cardiac-devices/chamber-sentinel-cied-sim/src/generator/cardiac/opencarp/templates/paced_crt/shock.npy"
+        },
+        {
+          "check": "ventricular_file_exists",
+          "passed": false,
+          "detail": "File not found: /Users/arkoganguli/Projects/medical-devices/cardiac-devices/chamber-sentinel-cied-sim/src/generator/cardiac/opencarp/templates/paced_crt/ventricular.npy"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "total": 18,
+    "passed": 0,
+    "failed": 18
+  }
+}

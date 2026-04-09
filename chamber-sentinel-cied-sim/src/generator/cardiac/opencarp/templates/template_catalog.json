@@ -1,0 +1,278 @@
+{
+  "version": "1.0.0",
+  "sample_rate_hz": 1000,
+  "generation_method": "synthetic_fallback",
+  "generated_at": "2026-04-09T00:13:54Z",
+  "rhythms": {
+    "nsr": {
+      "ionic_model": "tenTusscher2006",
+      "geometry": "slab",
+      "hr_range_bpm": [
+        60,
+        100
+      ],
+      "n_beats": 100,
+      "channels": [
+        "atrial",
+        "shock",
+        "ventricular"
+      ],
+      "generation_method": "unknown_preexisting"
+    },
+    "sinus_bradycardia": {
+      "ionic_model": "tenTusscher2006",
+      "geometry": "slab",
+      "hr_range_bpm": [
+        30,
+        59
+      ],
+      "n_beats": 80,
+      "channels": [
+        "atrial",
+        "shock",
+        "ventricular"
+      ],
+      "generation_method": "unknown_preexisting"
+    },
+    "sinus_tachycardia": {
+      "ionic_model": "tenTusscher2006",
+      "geometry": "slab",
+      "hr_range_bpm": [
+        101,
+        150
+      ],
+      "n_beats": 80,
+      "channels": [
+        "atrial",
+        "shock",
+        "ventricular"
+      ],
+      "generation_method": "unknown_preexisting"
+    },
+    "atrial_fibrillation": {
+      "ionic_model": "Courtemanche1998",
+      "geometry": "dual_slab",
+      "hr_range_bpm": [
+        80,
+        180
+      ],
+      "n_beats": 100,
+      "channels": [
+        "atrial",
+        "shock",
+        "ventricular"
+      ],
+      "generation_method": "unknown_preexisting"
+    },
+    "atrial_flutter": {
+      "ionic_model": "Courtemanche1998",
+      "geometry": "ring",
+      "hr_range_bpm": [
+        130,
+        170
+      ],
+      "n_beats": 80,
+      "channels": [
+        "atrial",
+        "shock",
+        "ventricular"
+      ],
+      "generation_method": "unknown_preexisting"
+    },
+    "svt": {
+      "ionic_model": "Courtemanche1998",
+      "geometry": "dual_slab",
+      "hr_range_bpm": [
+        150,
+        250
+      ],
+      "n_beats": 80,
+      "channels": [
+        "atrial",
+        "shock",
+        "ventricular"
+      ],
+      "generation_method": "unknown_preexisting"
+    },
+    "ventricular_tachycardia": {
+      "ionic_model": "OHaraRudy2011",
+      "geometry": "wedge",
+      "hr_range_bpm": [
+        120,
+        250
+      ],
+      "n_beats": 100,
+      "channels": [
+        "atrial",
+        "shock",
+        "ventricular"
+      ],
+      "generation_method": "unknown_preexisting"
+    },
+    "ventricular_fibrillation": {
+      "ionic_model": "OHaraRudy2011",
+      "geometry": "wedge",
+      "hr_range_bpm": [
+        200,
+        400
+      ],
+      "n_beats": 100,
+      "channels": [
+        "atrial",
+        "shock",
+        "ventricular"
+      ],
+      "generation_method": "unknown_preexisting"
+    },
+    "complete_heart_block": {
+      "ionic_model": "tenTusscher2006",
+      "geometry": "dual_slab",
+      "hr_range_bpm": [
+        20,
+        45
+      ],
+      "n_beats": 80,
+      "channels": [
+        "atrial",
+        "shock",
+        "ventricular"
+      ],
+      "generation_method": "unknown_preexisting"
+    },
+    "mobitz_i": {
+      "ionic_model": "tenTusscher2006",
+      "geometry": "dual_slab",
+      "hr_range_bpm": [
+        50,
+        100
+      ],
+      "n_beats": 80,
+      "channels": [
+        "atrial",
+        "shock",
+        "ventricular"
+      ],
+      "generation_method": "unknown_preexisting"
+    },
+    "mobitz_ii": {
+      "ionic_model": "tenTusscher2006",
+      "geometry": "dual_slab",
+      "hr_range_bpm": [
+        40,
+        80
+      ],
+      "n_beats": 80,
+      "channels": [
+        "atrial",
+        "shock",
+        "ventricular"
+      ],
+      "generation_method": "unknown_preexisting"
+    },
+    "pvc": {
+      "ionic_model": "OHaraRudy2011",
+      "geometry": "wedge",
+      "hr_range_bpm": [
+        60,
+        100
+      ],
+      "n_beats": 80,
+      "channels": [
+        "atrial",
+        "shock",
+        "ventricular"
+      ],
+      "generation_method": "unknown_preexisting"
+    },
+    "pac": {
+      "ionic_model": "Courtemanche1998",
+      "geometry": "slab",
+      "hr_range_bpm": [
+        60,
+        100
+      ],
+      "n_beats": 80,
+      "channels": [
+        "atrial",
+        "shock",
+        "ventricular"
+      ],
+      "generation_method": "unknown_preexisting"
+    },
+    "junctional": {
+      "ionic_model": "tenTusscher2006",
+      "geometry": "dual_slab",
+      "hr_range_bpm": [
+        40,
+        60
+      ],
+      "n_beats": 80,
+      "channels": [
+        "atrial",
+        "shock",
+        "ventricular"
+      ],
+      "generation_method": "unknown_preexisting"
+    },
+    "paced_aai": {
+      "ionic_model": "tenTusscher2006",
+      "geometry": "slab",
+      "hr_range_bpm": [
+        60,
+        130
+      ],
+      "n_beats": 80,
+      "channels": [
+        "atrial",
+        "shock",
+        "ventricular"
+      ],
+      "generation_method": "unknown_preexisting"
+    },
+    "paced_vvi": {
+      "ionic_model": "OHaraRudy2011",
+      "geometry": "slab",
+      "hr_range_bpm": [
+        60,
+        130
+      ],
+      "n_beats": 80,
+      "channels": [
+        "atrial",
+        "shock",
+        "ventricular"
+      ],
+      "generation_method": "unknown_preexisting"
+    },
+    "paced_ddd": {
+      "ionic_model": "tenTusscher2006",
+      "geometry": "dual_slab",
+      "hr_range_bpm": [
+        60,
+        130
+      ],
+      "n_beats": 80,
+      "channels": [
+        "atrial",
+        "shock",
+        "ventricular"
+      ],
+      "generation_method": "unknown_preexisting"
+    },
+    "paced_crt": {
+      "ionic_model": "OHaraRudy2011",
+      "geometry": "dual_slab",
+      "hr_range_bpm": [
+        60,
+        130
+      ],
+      "n_beats": 80,
+      "channels": [
+        "atrial",
+        "shock",
+        "ventricular"
+      ],
+      "generation_method": "unknown_preexisting"
+    }
+  }
+}

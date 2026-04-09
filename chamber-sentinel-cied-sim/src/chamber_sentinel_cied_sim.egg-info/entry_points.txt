@@ -1,0 +1,3 @@
+[console_scripts]
+cied-demo = scripts.demo:main
+cied-sim = src.api.main:run

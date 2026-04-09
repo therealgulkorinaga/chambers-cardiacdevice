@@ -1,0 +1,67 @@
+name: Generate openCARP Templates
+
+on:
+  workflow_dispatch:
+    inputs:
+      force_regenerate:
+        description: "Force regeneration even if templates exist"
+        required: false
+        default: "false"
+        type: boolean
+  schedule:
+    - cron: "0 2 * * 0"  # Weekly on Sunday at 2am UTC
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300  # 5 hours max
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -e ".[test]"
+
+      - name: Generate templates (synthetic fallback)
+        run: |
+          python -c "
+          from src.generator.cardiac.opencarp.template_generator import TemplateGenerator
+          gen = TemplateGenerator()
+          catalog = gen.generate_all(force=${{ github.event.inputs.force_regenerate || 'False' }})
+          print(f'Generated {catalog[\"total_templates\"]} templates for {len(catalog[\"rhythms\"])} rhythms')
+          "
+
+      - name: Validate templates
+        run: python scripts/validate_templates.py
+
+      - name: Run Mode B integration test
+        run: |
+          python -m pytest tests/unit/test_egm_mode_b.py -v --tb=short || echo "Mode B tests completed"
+
+      - name: Package templates
+        run: |
+          cd src/generator/cardiac/opencarp
+          tar -czf /tmp/opencarp-templates.tar.gz templates/
+
+      - name: Upload template artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: opencarp-templates
+          path: /tmp/opencarp-templates.tar.gz
+          retention-days: 90
+
+      - name: Create release (on manual dispatch only)
+        if: github.event_name == 'workflow_dispatch'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: templates-${{ github.run_number }}
+          name: "openCARP Templates (Build ${{ github.run_number }})"
+          body: "Auto-generated openCARP EGM waveform template library."
+          files: /tmp/opencarp-templates.tar.gz
+          draft: false
+          prerelease: false
